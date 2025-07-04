@@ -1,4 +1,4 @@
-const product = async (req, res) => {
+  const product = async (req, res) => {
   try {
     res.status(200).json({
       id: "1",
@@ -13,6 +13,8 @@ const product = async (req, res) => {
     console.error("Product Error:", error);
     res.status(500).send("Something went wrong in product route.");
   }
+
+
 };
 
 module.exports = { product };
