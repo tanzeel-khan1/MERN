@@ -1,18 +1,4 @@
-// const products = require("./Products/first");
-
-// const product = async (req, res) => {
-//   try {
-//     res.status(200).json(products);
-//     console.log("Products sent successfully");
-//   } catch (error) {
-//     console.error("Product Error:", error);
-//     res.status(500).send("Something went wrong in product route.");
-//   }
-// };
-
-// module.exports = { product };
-
-// ================  Signup ===========================
+const bcrypt = require("bcrypt");
 const User = require("../model/user-model");
 
 const Signup = async (req, res) => {
@@ -21,18 +7,23 @@ const Signup = async (req, res) => {
 
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ msg: "User pehle se mojood hai" });
+      return res.status(400).json({ msg: "User already exists" });
     }
 
-    const newUser = await User.create({ username, email, password, address });
+    const saltRounds = 10;
+    const hash_password = await bcrypt.hash(password, saltRounds);
 
-    res.status(201).json({
-      message: "Signup kamyab hua",
-      user: newUser,
+    const newUser = await User.create({
+      username,
+      email,
+      password: hash_password, 
+      address,
     });
+
+    res.status(201).json({ message: "Signup successful", user: newUser });
   } catch (error) {
-    console.error("Signup Error", error);
-    res.status(500).json({ msg: "Signup fail hua", error: error.message });
+    console.error("Signup Error:", error);
+    res.status(500).json({ msg: "Signup failed", error: error.message });
   }
 };
 
