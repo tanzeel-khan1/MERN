@@ -57,4 +57,38 @@ const Login = async (req, res) => {
   }
 };
 
- module.exports = {Signup,Login};
+// const login = async (req, res) => {
+//   const { email, password } = req.body;
+
+//   try {
+//     const userExists = await User.findOne({ email });
+//     if (!userExists) {
+//       return res.status(400).json({ message: "Invalid email" });
+//     }
+
+//     const isMatch = await bcrypt.compare(password, userExists.password);
+//     if (!isMatch) {
+//       return res.status(400).json({ message: "Invalid password" });
+//     }
+
+//     const token = await userExists.generateToken();
+//     res.status(200).json({
+//       message: "Login successful",
+//       token
+//     });
+
+//   } catch (error) {
+//     res.status(500).json({ message: "Login failed", error: error.message });
+//   }
+// };
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+ module.exports = {Signup,Login,getAllUsers,};
