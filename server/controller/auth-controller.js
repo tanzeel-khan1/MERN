@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const User = require("../model/user-model");
 // ======================== SignUp ===================================
 
+
+
 const Signup = async (req, res) => {
   try {
     const { username, email, password, address } = req.body;
@@ -11,14 +13,17 @@ const Signup = async (req, res) => {
       return res.status(400).json({ msg: "User already exists" });
     }
 
+    const userCount = await User.countDocuments();
+
     const saltRounds = 10;
     const hash_password = await bcrypt.hash(password, saltRounds);
 
     const newUser = await User.create({
       username,
       email,
-      password: hash_password, 
+      password: hash_password,
       address,
+      customId: userCount + 1,
     });
 
     res.status(201).json({ message: "Signup successful", user: newUser });
@@ -27,6 +32,7 @@ const Signup = async (req, res) => {
     res.status(500).json({ msg: "Signup failed", error: error.message });
   }
 };
+
 // ======================== Login ===================================
 const Login = async (req, res) => {
 
@@ -57,30 +63,7 @@ const Login = async (req, res) => {
   }
 };
 
-// const login = async (req, res) => {
-//   const { email, password } = req.body;
 
-//   try {
-//     const userExists = await User.findOne({ email });
-//     if (!userExists) {
-//       return res.status(400).json({ message: "Invalid email" });
-//     }
-
-//     const isMatch = await bcrypt.compare(password, userExists.password);
-//     if (!isMatch) {
-//       return res.status(400).json({ message: "Invalid password" });
-//     }
-
-//     const token = await userExists.generateToken();
-//     res.status(200).json({
-//       message: "Login successful",
-//       token
-//     });
-
-//   } catch (error) {
-//     res.status(500).json({ message: "Login failed", error: error.message });
-//   }
-// };
 
 const getAllUsers = async (req, res) => {
   try {
