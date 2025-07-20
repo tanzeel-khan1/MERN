@@ -39,5 +39,4 @@ router.get("/product", getAllProducts);
 router.get("/product/:id", getProductById);
 
 router.get("/users", auth, admin, getAllUsers);
-
 module.exports = router;

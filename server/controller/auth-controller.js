@@ -3,7 +3,6 @@ const User = require("../model/user-model");
 // ======================== SignUp ===================================
 
 
-
 const Signup = async (req, res) => {
   try {
     const { username, email, password, address } = req.body;
@@ -33,6 +32,8 @@ const Signup = async (req, res) => {
   }
 };
 
+
+
 // ======================== Login ===================================
 const Login = async (req, res) => {
 
@@ -40,6 +41,8 @@ const Login = async (req, res) => {
     const { email, password } = req.body;
 
     const userExists = await User.findOne({ email });
+
+
     if (!userExists) {
           return res.status(400).json({ message: "Invalid Email" });
     }
@@ -57,7 +60,10 @@ const Login = async (req, res) => {
       token,
       userId: userExists._id.toString(),
     });
+
+
   } catch (error) {
+
     console.log("Login Error:", error);
     res.status(500).json({ message: "Login failed" });
   }
@@ -66,12 +72,11 @@ const Login = async (req, res) => {
 
 
 const getAllUsers = async (req, res) => {
-  try {
+        try {
     const users = await User.find().select("-password");
     res.json(users);
-  } catch (err) {
+      } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
 };
-
- module.exports = {Signup,Login,getAllUsers,};
+module.exports = {Signup,Login,getAllUsers,};
