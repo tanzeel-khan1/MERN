@@ -38,7 +38,7 @@ const product = [
     id: "6",
     img: "https://pk.hellofaster.com/cdn/shop/files/FASTER-S5-ANC-Over-Ear-Wireless-Headphones-with-Active-Noise.png?v=1731493389",
     name: "HeadPhone",
-    price: "10000",
+    price: "1000",
     description: "Wireless headphones with active noise cancellation and long battery life."
   }
 ];

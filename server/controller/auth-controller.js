@@ -44,6 +44,7 @@ const Login = async (req, res) => {
     const userExists = await User.findOne({ email });
 
 
+    
     if (!userExists) {
           return res.status(400).json({ message: "Invalid Email" });
     }
@@ -57,6 +58,7 @@ const Login = async (req, res) => {
     console.log("TOKEN:", token); 
 
     res.status(200).json({
+
       message: "User Login Successful",
       token,
       userId: userExists._id.toString(),
@@ -69,8 +71,6 @@ const Login = async (req, res) => {
     res.status(500).json({ message: "Login failed" });
   }
 };
-
-
 
 const getAllUsers = async (req, res) => {
         try {
