@@ -1,62 +1,16 @@
-const product = require("../Products/first");
-const Mobile = require("../Products/Mobile");
-const Sports = require("../Products/Sports");
-const Cars = require("../Products/Cars");
-const Laptop = require("../Products/Laptop");
-const allProducts = [...product, ...Mobile, ...Sports, ...Cars, ...Laptop];
+const Product = require("../model/Product");
 
-const getAllProducts = (req, res) => {
+const getAllProducts = async (req, res) => {
   try {
-
-    
-    res.status(200).json(allProducts);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch products", error: err.message });
-  }
-};
-
-const getProductById = (req, res) => {
-  try {
-    const productId = parseInt(req.params.id);
-    const singleProduct = allProducts.find((item) => item.id === productId);
-
-    if (!singleProduct) {
-      return res.status(404).json({ message: "Product not found" });
+    const products = await Product.find();
+    if (!products || products.length === 0) {
+      return res.status(404).json({ message: "No products found" });
     }
-
-    res.status(200).json(singleProduct);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch product", error: err.message });
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("MongoDB error:", error);
+    res.status(500).json({ message: "Failed to fetch products", error: error.message });
   }
 };
 
-const getMobiles = (req, res) => {
-  try {
-    res.status(200).json(Mobile);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch mobiles", error: err.message });
-  }
-};
-const getSports = (req, res) => {
-  try {
-    res.status(200).json( Sports);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch Sports", error: err.message });
-  }
-};
-const getCars = (req, res) => {
-  try {
-    res.status(200).json( Cars);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch Cars", error: err.message });
-  }
-};
-const getLaptop = (req, res) => {
-  try {
-    res.status(200).json( Laptop);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch animals", error: err.message });
-  }
-};
-
-module.exports = { getAllProducts, getProductById, getMobiles, getSports, getCars, getLaptop };
+module.exports = { getAllProducts };
