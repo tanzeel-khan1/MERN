@@ -2,12 +2,10 @@ const bcrypt = require("bcrypt");
 const User = require("../model/user-model");
 // ======================== SignUp ===================================
 
-
 const Signup = async (req, res) => {
   try {
     
     const { username, email, password, address } = req.body;
-
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ msg: "User already exists" });
