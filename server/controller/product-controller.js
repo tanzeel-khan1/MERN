@@ -7,6 +7,7 @@ const getAllProducts = async (req, res) => {
       return res.status(404).json({ message: "No products found" });
     }
     res.status(200).json(products);
+    
   } catch (error) {
     console.error("MongoDB error:", error);
     res.status(500).json({ message: "Failed to fetch products", error: error.message });

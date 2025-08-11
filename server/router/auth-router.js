@@ -11,6 +11,7 @@ router.post("/login", Login);
 router.get("/product", getAllProducts);
 router.get("/product/:id", getProductById);
 router.get("/mobile", getMobiles);
+
 router.get("/sports", getSports); 
 router.get("/cars", getCars); 
 router.get("/laptop", getLaptop);

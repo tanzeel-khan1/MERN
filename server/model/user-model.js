@@ -24,7 +24,6 @@ const userSchema = new mongoose.Schema({
         default : false
     },
 
-
      customId: {
     type: Number,
     unique: true,
