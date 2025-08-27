@@ -1,7 +1,6 @@
 const Product = require("../model/Product");
-const Fome = require("./Fome"); // 👈 import from separate file
 
-const getAllProducts = async (req, res) => {
+const Fome = async (req, res) => {
   try {
     const products = await Product.find();
     if (!products || products.length === 0) {
@@ -14,4 +13,4 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-module.exports = { getAllProducts, Fome };
+module.exports = Fome;
