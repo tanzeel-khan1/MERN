@@ -1,5 +1,9 @@
 const bcrypt = require("bcrypt");
 const User = require("../model/user-model");
+const Message = require("../model/Message");
+const cron = require("node-cron");
+
+
 // ======================== SignUp ===================================
 
 const Signup = async (req, res) => {
@@ -75,5 +79,42 @@ const getAllUsers = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+const MSG = async (req, res) => {
+  try {
+    const { YourName, YourEmail, YourMessage } = req.body;
 
-module.exports = {Signup,Login,getAllUsers,};
+    const newMsg = await Message.create({
+      name: YourName,
+      email: YourEmail,
+      message: YourMessage,
+      status: "pending",
+      expireAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 din
+    });
+
+    // ✅ Job schedule: 3 din baad chalega
+    cron.schedule(
+      `0 0 0 ${new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).getDate()} * *`,
+      async () => {
+        try {
+          const msg = await Message.findById(newMsg._id);
+          if (msg && msg.status === "pending") {
+            msg.status = "secret";
+            msg.secretMessage = "🎁 This is your secret message after 3 days!";
+            await msg.save();
+          }
+        } catch (err) {
+          console.error("Cron job error:", err);
+        }
+      }
+    );
+
+    res
+      .status(201)
+      .json({ msg: "Message saved successfully", data: newMsg });
+  } catch (error) {
+    console.error("Message Save Error:", error);
+    res.status(500).json({ msg: "Message save failed", error: error.message });
+  }
+};
+
+module.exports = {Signup,Login,getAllUsers,MSG, };
