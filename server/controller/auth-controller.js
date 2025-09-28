@@ -88,10 +88,9 @@ const MSG = async (req, res) => {
       email: YourEmail,
       message: YourMessage,
       status: "pending",
-      expireAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 din
+      expireAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), 
     });
 
-    // ✅ Job schedule: 3 din baad chalega
     cron.schedule(
       `0 0 0 ${new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).getDate()} * *`,
       async () => {
