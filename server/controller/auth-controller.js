@@ -98,7 +98,7 @@ const MSG = async (req, res) => {
           const msg = await Message.findById(newMsg._id);
           if (msg && msg.status === "pending") {
             msg.status = "secret";
-            msg.secretMessage = "🎁 This is your secret message after 3 days!";
+            msg.secretMessage = "This is your secret message after 3 days!";
             await msg.save();
           }
         } catch (err) {

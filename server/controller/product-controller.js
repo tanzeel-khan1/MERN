@@ -1,5 +1,5 @@
 const Product = require("../model/Product");
-const Fome = require("./Fome"); // 👈 import from separate file
+const Fome = require("./Fome"); 
 
 const getAllProducts = async (req, res) => {
   try {
